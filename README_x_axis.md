@@ -143,7 +143,6 @@ show:
   x_labels_inline: true
   x_lines: true
 hours_to_show: 216
-points_per_hour: 1
 group_by: date
 x_format:
   locales: locale
