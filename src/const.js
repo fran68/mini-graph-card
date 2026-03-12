@@ -1,4 +1,4 @@
-const URL_DOCS = 'https://github.com/kalkih/mini-graph-card/blob/master/README.md';
+const URL_DOCS = 'https://github.com/fran68/mini-graph-card/blob/master/README.md';
 const FONT_SIZE = 14;
 const FONT_SIZE_HEADER = 14;
 const MAX_BARS = 96;

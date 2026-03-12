@@ -1,5 +1,5 @@
 {
-  "name": "mini-graph-card",
+  "name": "mini-graph-card-xt",
   "version": "0.13.0",
   "description": "A minimalistic and customizable graph card for Home Assistant Lovelace UI",
   "keywords": [
@@ -15,7 +15,7 @@
   ],
   "main": "src/main.js",
   "module": "src/main.js",
-  "repository": "git@github.com:kalkih/mini-graph-card.git",
+  "repository": "git@github.com:fran68/mini-graph-card.git",
   "author": "Karl Kihlström <mrkihlstrom@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -58,7 +58,7 @@
   "scripts": {
     "build": "npm run lint && npm run rollup && npm run babel",
     "rollup": "rollup -c",
-    "babel": "babel dist/mini-graph-card-bundle.js --out-file dist/mini-graph-card-bundle.js",
+    "babel": "babel dist/mini-graph-card-xt-bundle.js --out-file dist/mini-graph-card-xt-bundle.js",
     "lint": "eslint src/* --ext .js",
     "watch": "rollup -c --watch",
     "postversion": "npm run build"
