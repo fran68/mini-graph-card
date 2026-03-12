@@ -1,3 +1,12 @@
+# [0.1.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.0.0...xt-v0.1.0) (2026-03-12)
+
+
+### Features
+
+* add fill threshold (kalkih/mini-graph-card[#1205](https://github.com/fran68/mini-graph-card/issues/1205)) from @Haluska77 ([a17cf21](https://github.com/fran68/mini-graph-card/commit/a17cf21f2f442502589e3a6fcaaa4cbcc05f7be5))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 # [0.13.0](https://github.com/kalkih/mini-graph-card/compare/v0.12.1...v0.13.0) (2025-05-29)
 
 
