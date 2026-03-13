@@ -1,3 +1,12 @@
+## [0.1.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.1.0...xt-v0.1.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* update README.md for fill_threshold ([38b36da](https://github.com/fran68/mini-graph-card/commit/38b36da68ac40d7977d5ff92f7658653d5673c73))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 # [0.1.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.0.0...xt-v0.1.0) (2026-03-12)
 
 

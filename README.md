@@ -118,7 +118,7 @@ We recommend looking at the [Example usage section](#example-usage) to understan
 | state_map | [state map object](#state-map-object) |  | v0.8.0 | List of entity states to convert (order matters as position becomes a value on the graph).
 | value_factor | number | 0 | v0.9.4 | Scale value by order of magnitude (e.g. convert Watts to kilo Watts), use negative value to scale down.
 | logarithmic | boolean | `false` | v0.10.0 | Use a Logarithmic scale for the graph
-| fill_threshold | number |  | NEXT_VERSION | Graph is filled up to the defined value instead to the bottom (see also entity options).
+| fill_threshold | number |  | xt-v0.1.1 | Graph is filled up to the defined value instead to the bottom (see also entity options).
 
 
 #### Entities object
