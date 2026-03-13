@@ -16,7 +16,7 @@ module.exports = {
       npmPublish: false,
     }],
     ['@semantic-release/exec', {
-      prepareCmd: './scripts/update_readme.sh "${nextRelease.version}" "$GITHUB_REF"',
+      prepareCmd: './scripts/update_readme.sh "${nextRelease.gitTag}" "$GITHUB_REF"',
     }],
     ['@semantic-release/git', {
       assets: [

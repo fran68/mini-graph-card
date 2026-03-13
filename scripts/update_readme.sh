@@ -14,12 +14,12 @@ if [ -z "${BRANCH}" ]; then
   exit 1;
 fi
 
-if [ ! "${BRANCH}" = "refs/heads/master" ]; then
+if [ ! "${BRANCH}" = "refs/heads/main" ]; then
   echo "Branch is ${BRANCH}; README.md not updated."
   exit 0;
 fi
 
-sed -i -e "s/NEXT_VERSION/v${VERSION}/g" ./README.md
-sed -i -e "s|https://github.com/kalkih/mini-graph-card/releases/download/.*/mini-graph-card-bundle.js|https://github.com/kalkih/mini-graph-card/releases/download/v${VERSION}/mini-graph-card-bundle.js|g" ./README.md
-sed -i -e "s|-\surl:\s/local/mini-graph-card-bundle.js?v=.*|- url: /local/mini-graph-card-bundle.js?v=${VERSION}|g" ./README.md
+sed -i -e "s/NEXT_VERSION/${VERSION}/g" ./README.md
+# sed -i -e "s|https://github.com/kalkih/mini-graph-card/releases/download/.*/mini-graph-card-bundle.js|https://github.com/kalkih/mini-graph-card/releases/download/v${VERSION}/mini-graph-card-bundle.js|g" ./README.md
+# sed -i -e "s|-\surl:\s/local/mini-graph-card-bundle.js?v=.*|- url: /local/mini-graph-card-bundle.js?v=${VERSION}|g" ./README.md
 
