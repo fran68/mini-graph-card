@@ -1,12 +1,12 @@
-# Labels, ticks and grid lines for x axis
+# Labels, ticks and grid lines for X-axis
 
 
 
 ## Enabling Labels and Gridlines
 
-![Labels and Gridlines for x axis](x_axis_001_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_001_mini.jpg)
 
-You can add labels and grid lines for the x axis. 
+You can add labels and grid lines for the X-axis. 
 
 ```yaml
 type: custom:mini-graph-card
@@ -21,10 +21,10 @@ hours_to_show: 10
 group_by: hour
 ```
 
-The x_scale option provides the maximum number of labels and lines for the x-axis. This is 10 by default. The x_major_breaks option specifies the major or thick lines every n-th label/line (per default every 4-th). 
-The following figure shows a finer grid and highlight every 3th mark (label, tick, line). You can play around with x_scale and x_major_breaks.
+The x_scale option provides the maximum number of labels and lines for the X-axis. This is 10 by default. The x_major_breaks option specifies which lines/labels among all lines/labels are drawn thick (per default every fourth mark). 
+The following figure shows more labels and highlight every third mark (label, tick, line). You can play around with x_scale and x_major_breaks.
 
-![Labels and Gridlines for x axis](x_axis_002_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_002_mini.jpg)
 
 ```yaml
 type: custom:mini-graph-card
@@ -41,9 +41,13 @@ x_major_breaks: 3
 group_by: hour
 card_mod:
   style: |
-    .x_lines.--thin {
+    .xlines--thin {
       visibility: hidden;
     }
+    .xlines__top {
+      visibility: visible;
+    }
+
 ```
 
 The minor/thin lines are hidden by card-mod.
@@ -52,13 +56,17 @@ The minor/thin lines are hidden by card-mod.
 
 ## X-axis and Bars
 
+Bars with X-axis are supported.
+
+![Labels and Gridlines for X-axis](x_axis_010_mini.jpg)
+
 When grouped by date the X-axis labels are aligned with bar. 
 
-![Labels and Gridlines for x axis](x_axis_003_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_003_mini.jpg)
 
-You can override the default time format for date by setting the x_format option days to weekday with style 'short'.
+You can override the default time format for date by setting the option days in x_format to weekday with style 'short'.
 
-![Labels and Gridlines for x axis](x_axis_004_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_004_mini.jpg)
 
 ```yaml
 type: custom:mini-graph-card
@@ -87,7 +95,7 @@ Monday is highlighted as first day of week.
 
 When grouped by interval the time scale for the X-axis ends with the current time.
 
-![Labels and Gridlines for x axis](x_axis_005_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_005_mini.jpg)
 
 ```yaml
 type: custom:mini-graph-card
@@ -110,7 +118,7 @@ The show option x_labels_fill extends the fill into the X-axis area.
 
 You can align to the time scale (full hour) by prefixing the option x_scale with a minus.
 
-![Labels and Gridlines for x axis](x_axis_006_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_006_mini.jpg)
 
 ```yaml
 type: custom:mini-graph-card
@@ -134,7 +142,7 @@ x_major_breaks: 4
 
 ### Move labels into graph area
 
-![Labels and Gridlines for x axis](x_axis_007_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_007_mini.jpg)
 
 ```yaml
 show:
@@ -143,6 +151,7 @@ show:
   x_labels_inline: true
   x_lines: true
 hours_to_show: 216
+points_per_hour: 1
 group_by: date
 x_format:
   locales: locale
@@ -152,7 +161,7 @@ x_format:
 
 ### Define time format for labels
 
-![Labels and Gridlines for x axis](x_axis_008_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_008_mini.jpg)
 
 ```yaml
 show:
@@ -186,7 +195,7 @@ x_format:
 
 ### Use card-mod to adapt appearance
 
-![Labels and Gridlines for x axis](x_axis_009_mini.jpg)
+![Labels and Gridlines for X-axis](x_axis_009_mini.jpg)
 
 ```yaml
 show:
@@ -201,34 +210,37 @@ card_mod:
   style: |
     ha-card {
       box-shadow: 5px 5px 10px #3d6642;
+      border-radius: 0px;
     }
     .graph .graph__container
-    .x_labels {
-      font-size: calc(.15em + 11px);
+    .xlabels {
+      font-size: 0.9em;
     }
-    .graph .graph__container
-    .x_labels.--thick {
-      font-weight: 300;
-    }
-    .x_labels.--thin {
+    .xlabels--thick {
+      font-weight: 400 !important;
+     }
+    .xlabels--thin {
       visibility: hidden;
     }
-    .x_labels.--axis {
-      stroke-width: 2;
+    .xlabels__axis {
+      stroke-width: 2 !important;
     }
-    .x_ticks.--thick {
-      stroke-width: 1.5;
-    }
-    .x_ticks.--thin {
-      stroke-width: 1.5;
-    }
-    .x_lines.--thick {
+    .xlabels__tick {
       visibility: hidden;
     }
-    .x_lines.--thin {
+    .xlines {
       visibility: hidden;
     }
-    .x_lines.--top {
-      stroke-width: 2;
+    .xlines--thick {
+      visibility: hidden;
+    }
+    .xlines--thin {
+      stroke: grey !important;
+    }
+    .xlines__line {
+      stroke-width: 0.5 !important;
+    }
+    .xlines__top {
+      stroke-width: 2.5 !important;
     }
 ```
