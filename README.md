@@ -119,9 +119,9 @@ We recommend looking at the [Example usage section](#example-usage) to understan
 | value_factor | number | 0 | v0.9.4 | Scale value by order of magnitude (e.g. convert Watts to kilo Watts), use negative value to scale down.
 | logarithmic | boolean | `false` | v0.10.0 | Use a Logarithmic scale for the graph
 | fill_threshold | number |  | xt-v0.1.1 | Graph is filled up to the defined value instead to the bottom (see also entity options).
-| x_scale | number | `10` | NEXT_VERSION | Set maximum number of X-axis labels, ticks or grid lines (marks).
-| x_major_breaks | number | `4` | NEXT_VERSION | Display major (thick) label, tick and grid line every n-th mark.
-| x_format | list |  | NEXT_VERSION | Set time format for X-axis.
+| x_scale | number | `10` | xt-v0.2.0 | Set maximum number of X-axis labels, ticks or grid lines (marks).
+| x_major_breaks | number | `4` | xt-v0.2.0 | Display major (thick) label, tick and grid line every n-th mark.
+| x_format | list |  | xt-v0.2.0 | Set time format for X-axis.
 
 
 #### Entities object

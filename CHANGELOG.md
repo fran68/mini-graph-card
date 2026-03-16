@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.1.1...xt-v0.2.0) (2026-03-16)
+
+
+### Features
+
+* add labels and grid lines for x-axis ([641dfd1](https://github.com/fran68/mini-graph-card/commit/641dfd165f422d10b281551c6205289d4f7ac50a))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 ## [0.1.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.1.0...xt-v0.1.1) (2026-03-13)
 
 
