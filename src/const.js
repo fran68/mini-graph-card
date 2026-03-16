@@ -1,6 +1,7 @@
 const URL_DOCS = 'https://github.com/fran68/mini-graph-card/blob/master/README.md';
 const FONT_SIZE = 14;
 const FONT_SIZE_HEADER = 14;
+const X_LABELS_HEIGHT = 25;
 const MAX_BARS = 96;
 const ICONS = {
   humidity: 'hass:water-percent',
@@ -49,11 +50,18 @@ const X = 0;
 const Y = 1;
 const V = 2;
 const ONE_HOUR = 1000 * 3600;
+// TIME_STEPS in (partial of) hours
+// 1 / 60, 2 / 60, 3 / 60, 4 / 60, 5 / 60, 6 / 60, 10 / 60, 12 / 60, 15 / 60, 20 / 60, 30 / 60,
+const TIME_STEPS = [
+  1 / 60, 1 / 30, 1 / 20, 1 / 15, 1 / 12, 1 / 10, 1 / 6, 1 / 5, 1 / 4, 1 / 3, 1 / 2,
+  1, 2, 3, 4, 6, 8, 12, 24,
+];
 
 export {
   URL_DOCS,
   FONT_SIZE,
   FONT_SIZE_HEADER,
+  X_LABELS_HEIGHT,
   MAX_BARS,
   ICONS,
   DEFAULT_COLORS,
@@ -63,4 +71,5 @@ export {
   Y,
   V,
   ONE_HOUR,
+  TIME_STEPS,
 };

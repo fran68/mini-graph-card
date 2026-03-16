@@ -11,14 +11,16 @@ import './initialize';
 import { version } from '../package.json';
 
 import {
+  X_LABELS_HEIGHT,
   ICONS,
   UPDATE_PROPS,
   X, Y, V,
   ONE_HOUR,
+  TIME_STEPS,
 } from './const';
 import {
   getMin, getAvg, getMax,
-  getTime, getMilli,
+  getTime, getMilli, getTimestamp,
   compress, decompress,
   getFirstDefinedItem,
   compareArray,
@@ -93,6 +95,8 @@ class MiniGraphCard extends LitElement {
       length: Number,
       bound: [],
       boundSecondary: [],
+      timeframe: [],
+      xLabelsHeight: Number,
       abs: [],
       tooltip: {},
       updateQueue: [],
@@ -391,6 +395,158 @@ class MiniGraphCard extends LitElement {
     /* eslint-enable indent */
   }
 
+  get renderXAxis() {
+    const {
+      height,
+      show,
+      hours_to_show,
+      points_per_hour,
+      group_by,
+      bar_spacing,
+      x_scale,
+      x_major_breaks,
+      x_format,
+      line_width,
+    } = this.config;
+
+    // Declare or define vars
+    const viewWidth = 500;
+    let time_frame = hours_to_show;
+    let position = 1;
+    let x;
+    let x_date;
+
+    // Define width for graph types
+    const graphWidth = show.graph === 'bar' ? (viewWidth - bar_spacing) : viewWidth;
+
+    // Default time format for x-axis
+    let format = {
+      locales: 'en-US',
+      days: { month: 'short', day: 'numeric' },
+      hours: { hour: '2-digit', minute: '2-digit' },
+    };
+    if (x_format) {
+      format = { ...format, ...x_format };
+      if (x_format.locales === 'locale') format.locales = this._hass.language;
+    }
+    // Override options for time format configured in utils.js and buildConfig.sh
+    const format_override = {
+      ...this.config.format,
+      ...{
+        day: undefined, weekday: undefined, hour: undefined, minute: undefined,
+      },
+    };
+
+    // Get time_frame
+    // Visualized line graph is hours_to_show less one point
+    if (show.graph !== 'bar') {
+      time_frame = hours_to_show - 1 / points_per_hour || 1;
+    }
+
+    // Find best time_step [h]
+    const scale = Math.abs(x_scale) || 10;
+    const raw = Math.max(time_frame / scale, 1 / points_per_hour);
+    const fallback = Math.ceil(raw / 24) * 24;
+    const time_step = TIME_STEPS.find(value => value >= raw) || fallback;
+
+    // // Calculate interval [ms]
+    const interval = getMilli(time_step);
+    const point_step = 1 / (points_per_hour * time_frame);
+
+    // Calculate start date
+    const time = this.getEndDate();
+    // const time = new Date(this.timeframe[1].getTime());
+    const start = new Date(time);
+    start.setMilliseconds(start.getMilliseconds() - getMilli(time_frame));
+
+    // Get offset [h] for time and position (0..1) from full hour (from now to the past)
+    if (time_step >= 1) {
+      const time_offset = time.getHours() % time_step;
+      time.setHours(time.getHours() - time_offset);
+      position -= time_offset / time_frame;
+    }
+
+    // Adapt time scale for group_by option 'interval' when x_scale is a negative value
+    if (group_by === 'interval' && (x_scale !== Math.abs(x_scale) && show.graph !== 'bar')) {
+      const shift = (getTimestamp(time) % interval);
+      time.setMilliseconds(-shift);
+      position -= shift / getMilli(time_frame);
+    }
+
+    // Iterate accross elapsed time (time_frame)
+    const xLabels = [];
+    const xLines = [];
+    const margin = [show.fill ? 0 : line_width, line_width];
+    const major_interval = getMilli(time_step * (x_major_breaks || 4));
+
+    while (time >= start) {
+      // Find flags by modulo operation
+      const time_stamp = getTimestamp(time);
+
+      // Format time for labels
+      const days = getTime(time, { ...format_override, ...format.days }, format.locales);
+      const hours = getTime(time, { ...format_override, ...format.hours }, format.locales);
+      const date_type = (time_stamp % getMilli(24) < interval) ? days : hours;
+
+      // Format thick and thin grid lines
+      // getDay() is adjusted for Monday (Sunday is 0)
+      // CSS see https://github.com/kalkih/mini-graph-card/pull/1179#discussion_r1883352411
+      const thick_flag = (group_by === 'date')
+        ? time.getDay() === 1
+        : time_stamp % major_interval < interval;
+      const line_weight = thick_flag ? 'xlines--thick' : 'xlines--thin';
+      const label_weight = thick_flag ? 'xlabels--thick' : 'xlabels--thin';
+
+      // Adjust position for label below data point
+      if (show.graph === 'bar') {
+        x = position * graphWidth + bar_spacing / 2;
+      } else {
+        x = position * graphWidth - margin[X];
+      }
+      x_date = group_by === 'date' ? x + point_step * graphWidth / 2 : x;
+
+      // Create array for labels
+      if (show.x_labels) {
+        xLabels.push(svg`
+          <defs>
+            <filter id="textBg" x="-16%" width="132%" y="-6%" height="112%">
+              <feFlood flood-color="var(--primary-background-color, white)" flood-opacity="0.8"/>
+              <feGaussianBlur stdDeviation="2"/>
+              <feComposite operator="over" in="SourceGraphic"/>
+            </filter>
+          </defs>
+          <line class="${line_weight} xlabels__tick" x1=${x} y1=${height} x2="${x}" y2=${height + 4} />
+          <text class="${label_weight}" filter="${show.x_labels_inline ? 'url(#textBg)' : ''}"
+            x=${x_date} y="${show.x_labels_inline ? height - 11 : height + 18}">${date_type}
+          </text>
+        `);
+      }
+
+      // Create array for lines
+      if (show.x_lines) {
+        xLines.push(svg`
+          <line class="${line_weight} xlines__line" x1=${x} y1="0" x2="${x}" y2=${height} />
+        `);
+      }
+
+      time.setMilliseconds(time.getMilliseconds() - interval);
+      position -= time_step / time_frame;
+    }
+
+    if (show.x_labels && !show.x_labels_inline) {
+      xLabels.push(svg`
+        <line class="xlines--thin xlabels__axis" x1="0" y1=${height} x2="100%" y2=${height} />
+      `);
+    }
+    if (show.x_lines) {
+      xLines.push(svg`
+        <line class="xlines--thin xlines__top" x1="0" y1="0" x2="100%" y2="0" />
+      `);
+    }
+
+    return { xLabels, xLines };
+  }
+
   renderIndicator(state, index) {
     return svg`
       <svg width='10' height='10'>
@@ -546,9 +702,12 @@ class MiniGraphCard extends LitElement {
 
   renderSvg() {
     const { height } = this.config;
+    const { xLines, xLabels } = this.renderXAxis;
     return svg`
-      <svg width='100%' height=${height !== 0 ? '100%' : 0} viewBox='0 0 500 ${height}'
+      <svg width='100%' height=${height !== 0 ? '100%' : 0}
+        viewBox='0 0 500 ${height + this.xLabelsHeight}'
         @click=${e => e.stopPropagation()}>
+        <g class="xlines">${xLines}</g>
         <g>
           <defs>
             ${this.renderSvgGradient(this.gradient)}
@@ -559,6 +718,7 @@ class MiniGraphCard extends LitElement {
           ${this.line.map((line, i) => this.renderSvgLineRect(line, i))}
           ${this.bar.map((bars, i) => this.renderSvgBars(bars, i))}
         </g>
+        <g class="xlabels">${xLabels}</g>
         ${this.points.map((points, i) => this.renderSvgPoints(points, i))}
       </svg>`;
   }
@@ -605,7 +765,7 @@ class MiniGraphCard extends LitElement {
     return html`
       <div class="graph__labels --primary flex">
         <span class="label--max">${this.computeState(this.bound[1])}</span>
-        <span class="label--min">${this.computeState(this.bound[0])}</span>
+        <span class="label--min" style=${this.config.show.x_labels ? 'transform: translateY(-100%);' : ''}>${this.computeState(this.bound[0])}</span>
       </div>
     `;
   }
@@ -615,7 +775,7 @@ class MiniGraphCard extends LitElement {
     return html`
       <div class="graph__labels --secondary flex">
         <span class="label--max">${this.computeState(this.boundSecondary[1])}</span>
-        <span class="label--min">${this.computeState(this.boundSecondary[0])}</span>
+        <span class="label--min" style=${this.config.show.x_labels ? 'transform: translateY(-100%);' : ''}>${this.computeState(this.boundSecondary[0])}</span>
       </div>
     `;
   }
@@ -666,6 +826,11 @@ class MiniGraphCard extends LitElement {
 
   get secondaryYaxisSeries() {
     return this.secondaryYaxisEntities.map(entity => this.Graph[entity.index]);
+  }
+
+  get xLabelsHeight() {
+    return (this.config.show.x_labels && !this.config.show.x_labels_inline)
+      ? X_LABELS_HEIGHT : 0;
   }
 
   computeColor(inState, i) {
@@ -776,6 +941,7 @@ class MiniGraphCard extends LitElement {
     const end = this.getEndDate();
     const start = new Date(end);
     start.setMilliseconds(start.getMilliseconds() - getMilli(config.hours_to_show));
+    this.timeframe = [start, end];
 
     try {
       const promise = this.entity.map((entity, i) => this.updateEntity(entity, i, start, end));
@@ -808,13 +974,14 @@ class MiniGraphCard extends LitElement {
           if (config.entities[i].show_line !== false) this.line[i] = line;
           if (config.show.fill
             && config.entities[i].show_fill !== false) this.fill[i] = this.Graph[i]
-            .getFill(line, config.entities[i].fill_threshold);
+            .getFill(line, config.entities[i].fill_threshold,
+              config.show.x_labels_fill && this.xLabelsHeight || 0);
           if (config.show.points && (config.entities[i].show_points !== false)) {
             this.points[i] = this.Graph[i].getPoints();
           }
           if (config.color_thresholds.length > 0 && !config.entities[i].color)
             this.gradient[i] = this.Graph[i].computeGradient(
-              config.color_thresholds, this.config.logarithmic,
+              config.color_thresholds, this.config.logarithmic, this.xLabelsHeight,
             );
         }
       });
@@ -1052,13 +1219,14 @@ class MiniGraphCard extends LitElement {
     switch (this.config.group_by) {
       case 'date':
         date.setDate(date.getDate() + 1);
-        date.setHours(0, 0, 0);
+        date.setHours(0, 0, 0, 0);
         break;
       case 'hour':
         date.setHours(date.getHours() + 1);
-        date.setMinutes(0, 0);
+        date.setMinutes(0, 0, 0);
         break;
       default:
+        date.setMilliseconds(0);
         break;
     }
     return date;

@@ -154,10 +154,10 @@ export default class Graph {
     return path;
   }
 
-  computeGradient(thresholds, logarithmic) {
+  computeGradient(thresholds, logarithmic, xLabelsHeight) {
     const scale = logarithmic
       ? Math.log10(Math.max(1, this._max)) - Math.log10(Math.max(1, this._min))
-      : this._max - this._min;
+      : (this._max - this._min) * (1 + xLabelsHeight / this.height);
 
     return thresholds.map((stop, index, arr) => {
       let color;
@@ -185,8 +185,8 @@ export default class Graph {
     });
   }
 
-  getFill(path, entityFillThreshold) {
-    let height = this.height + this.margin[Y] * 4;
+  getFill(path, entityFillThreshold, xLabelsFill) {
+    let height = this.height + xLabelsFill + this.margin[Y] * 4;
     const customThreshold = [this._fillThreshold, entityFillThreshold]
       .filter(t => typeof t === 'number' && !Number.isNaN(t))
       .pop();

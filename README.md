@@ -119,6 +119,9 @@ We recommend looking at the [Example usage section](#example-usage) to understan
 | value_factor | number | 0 | v0.9.4 | Scale value by order of magnitude (e.g. convert Watts to kilo Watts), use negative value to scale down.
 | logarithmic | boolean | `false` | v0.10.0 | Use a Logarithmic scale for the graph
 | fill_threshold | number |  | xt-v0.1.1 | Graph is filled up to the defined value instead to the bottom (see also entity options).
+| x_scale | number | `10` | NEXT_VERSION | Set maximum number of X-axis labels, ticks or grid lines (marks).
+| x_major_breaks | number | `4` | NEXT_VERSION | Display major (thick) label, tick and grid line every n-th mark.
+| x_format | list |  | NEXT_VERSION | Set time format for X-axis.
 
 
 #### Entities object
@@ -175,6 +178,10 @@ All properties are optional.
 | name_adaptive_color | `false` | `true` / `false` | Make the name color adapt with the primary entity color.
 | icon_adaptive_color | `false` | `true` / `false` | Make the icon color adapt with the primary entity color.
 | loading_indicator | `true` | `true` / `false` | Show loading indicator while attempting to retrieve a history.
+| x_labels | `false` | `true` / `false` | Display X-axis labels with horizontal line and ticks.
+| x_labels_inline | `false` | `true` / `false` | Display X-axis labels within the graph area. Only valid when x_labels is enabled.
+| x_labels_fill | `false` | `true` / `false` | Stretch the fill into the label area. Only valid when x_labels is enabled and labels are not inline.
+| x_lines | `false` | `true` / `false` | Display X-axis grid lines.
 
 
 #### Line color object
@@ -579,6 +586,24 @@ entities:
 ```
 ![image](https://github.com/ildar170975/mini-graph-card/assets/71872483/eebd0cea-da93-4bf5-97a1-118edd2a9c5e)
 
+#### Labels, ticks and grid lines for X-axis
+
+![image](https://github.com/user-attachments/assets/32583de8-db33-4313-9f16-8cae9688398b)
+
+You can add labels and grid lines for the X-axis.
+
+```yaml
+type: custom:mini-graph-card
+name: Floor
+entities:
+  - entity: sensor.temperature
+    name: Temperatur
+show:
+  x_labels: true
+  x_lines: true
+hours_to_show: 60
+group_by: hour
+```
 
 ## Development
 

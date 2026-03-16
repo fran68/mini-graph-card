@@ -361,6 +361,26 @@ const style = css`
     border-radius: 100%;
     min-width: 10px;
   }
+  .xlabels {
+    font-size: 0.8em;
+    fill: var(--primary-text-color, white);
+    text-anchor: middle;
+    alignment-baseline: middle;
+  }
+  .xlabels--thick {
+    font-weight: 500;
+  }
+  .xlabels--thin {
+    font-weight: 300;
+  }
+  .xlines--thick {
+    stroke: var(--mcg-grid-line-thick-color, rgb(from var(--divider-color) R G B /0.5));
+    stroke-width: 0.5;
+  }
+  .xlines--thin {
+    stroke: var(--mcg-grid-line-thick-color, rgb(from var(--divider-color) R G B /0.2));
+    stroke-width: 0.5;
+  }
   .info {
     justify-content: space-between;
     align-items: middle;
