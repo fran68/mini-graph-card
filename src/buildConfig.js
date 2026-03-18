@@ -117,6 +117,8 @@ export default (config) => {
     height: 100,
     hours_to_show: 24,
     points_per_hour: 0.5,
+    x_scale: 10,
+    x_major_breaks: 4,
     aggregate_func: 'avg',
     group_by: 'interval',
     line_color: [...DEFAULT_COLORS],

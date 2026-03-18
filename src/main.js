@@ -444,8 +444,7 @@ class MiniGraphCard extends LitElement {
     }
 
     // Find best time_step [h]
-    const scale = Math.abs(x_scale) || 10;
-    const raw = Math.max(time_frame / scale, 1 / points_per_hour);
+    const raw = Math.max(time_frame / Math.abs(x_scale), 1 / points_per_hour);
     const fallback = Math.ceil(raw / 24) * 24;
     const time_step = TIME_STEPS.find(value => value >= raw) || fallback;
 
