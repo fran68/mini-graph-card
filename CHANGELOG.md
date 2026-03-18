@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.2.0...xt-v0.2.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* adapt definition of default values for x_scale and x_major_breaks ([8c5c3c4](https://github.com/fran68/mini-graph-card/commit/8c5c3c4e63b104aed2e1b01751b4223942764972))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 # [0.2.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.1.1...xt-v0.2.0) (2026-03-16)
 
 
