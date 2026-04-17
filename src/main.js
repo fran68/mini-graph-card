@@ -408,11 +408,14 @@ class MiniGraphCard extends LitElement {
       x_format,
       line_width,
     } = this.config;
+    if (!show.x_labels && !show.x_lines) return { xLines: [], xLabels: [] };
 
     // Declare or define vars
     const viewWidth = 500;
     let time_frame = hours_to_show;
     let position = 1;
+    const xLabels = [];
+    const xLines = [];
     let x;
     let x_date;
 
@@ -473,8 +476,6 @@ class MiniGraphCard extends LitElement {
     }
 
     // Iterate accross elapsed time (time_frame)
-    const xLabels = [];
-    const xLines = [];
     const margin = [show.fill ? 0 : line_width, line_width];
     const major_interval = getMilli(time_step * (x_major_breaks || 4));
 
