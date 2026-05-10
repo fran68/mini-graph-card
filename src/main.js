@@ -402,7 +402,6 @@ class MiniGraphCard extends LitElement {
       hours_to_show,
       points_per_hour,
       group_by,
-      bar_spacing,
       x_scale,
       x_major_breaks,
       x_format,
@@ -419,8 +418,9 @@ class MiniGraphCard extends LitElement {
     let x;
     let x_date;
 
-    // Define width for graph types
-    const graphWidth = show.graph === 'bar' ? (viewWidth - bar_spacing) : viewWidth;
+    // Define width for graph
+    const margin = [show.fill ? 0 : line_width, line_width];
+    const graphWidth = viewWidth - margin[X] * 2;
 
     // Default time format for x-axis
     let format = {
@@ -476,7 +476,6 @@ class MiniGraphCard extends LitElement {
     }
 
     // Iterate accross elapsed time (time_frame)
-    const margin = [show.fill ? 0 : line_width, line_width];
     const major_interval = getMilli(time_step * (x_major_breaks || 4));
 
     while (time >= start) {
@@ -497,12 +496,8 @@ class MiniGraphCard extends LitElement {
       const line_weight = thick_flag ? 'xlines--thick' : 'xlines--thin';
       const label_weight = thick_flag ? 'xlabels--thick' : 'xlabels--thin';
 
+      x = margin[X] + position * graphWidth;
       // Adjust position for label below data point
-      if (show.graph === 'bar') {
-        x = position * graphWidth + bar_spacing / 2;
-      } else {
-        x = position * graphWidth - margin[X];
-      }
       x_date = group_by === 'date' ? x + point_step * graphWidth / 2 : x;
 
       // Create array for labels
