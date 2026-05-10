@@ -1,3 +1,22 @@
+# [0.3.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.2.1...xt-v0.3.0) (2026-05-10)
+
+
+### Bug Fixes
+
+* check config for x_labels and x_lines if enabled ([09492eb](https://github.com/fran68/mini-graph-card/commit/09492ebd1b2c7d166ab64ec57484ada9f14cc82a))
+* gradient for color thresholds ([eb8703f](https://github.com/fran68/mini-graph-card/commit/eb8703f3e9cfe00aa0e3aeeaa5a39b9753cce8b9))
+* labels and grid lines for x-axis, get x margin in sync with line and bar graph ([9ef11cd](https://github.com/fran68/mini-graph-card/commit/9ef11cd728f52b8f30372137fd6b2c71306ea2c6))
+* state last uses value from last graph coordinate (kalkih[#1308](https://github.com/fran68/mini-graph-card/issues/1308)) ([89fe5d0](https://github.com/fran68/mini-graph-card/commit/89fe5d01b352bfc7f995971ad56efb8bc005add8))
+
+
+### Features
+
+* graph with preset value ([6102103](https://github.com/fran68/mini-graph-card/commit/61021034e4e6d739deb6cc86456f20494f5f3ecd))
+* line_width per entity (parts from kalkih[#1241](https://github.com/fran68/mini-graph-card/issues/1241)) ([e0d0323](https://github.com/fran68/mini-graph-card/commit/e0d03233028d195f3a174d6a9eb342271ca1a0fb))
+* spacing between bar groups (multiple entities) ([3ebe1eb](https://github.com/fran68/mini-graph-card/commit/3ebe1ebcbc770b68d1b559b1ddbb35d3a78aecf9))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 ## [0.2.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.2.0...xt-v0.2.1) (2026-03-18)
 
 
