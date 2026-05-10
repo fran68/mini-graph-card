@@ -1168,6 +1168,11 @@ class MiniGraphCard extends LitElement {
     if (this.config.entities[index].fixed_value === true) {
       const last = stateHistory[stateHistory.length - 1];
       this.Graph[index].history = [last, last];
+    } else if (typeof this.config.entities[index].preset === 'number') {
+      const final = stateHistory[stateHistory.length - 1];
+      const last = JSON.parse(JSON.stringify(final));
+      last.state = this.config.entities[index].preset;
+      this.Graph[index].history = [last, last];
     } else {
       this.Graph[index].history = stateHistory;
     }

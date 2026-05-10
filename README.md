@@ -150,6 +150,7 @@ properties of the Entity object detailed in the following table (as per `sensor.
 | fixed_value | boolean |         | Set to true to graph the entity's current state as a fixed value instead of graphing its state history.
 | smoothing | boolean |         | Override for a flag indicating whether to make graph line smooth.
 | fill_threshold | number |         | Graph is filled up to the defined value instead to the bottom (see also card options).
+| preset | number |         | Override the entity state with a preset value.
 
 ```yaml
 entities:
@@ -604,6 +605,37 @@ show:
   x_lines: true
 hours_to_show: 60
 group_by: hour
+```
+
+#### Lines with Preset
+
+![image](https://github.com/user-attachments/assets/f6083986-92d2-4cb2-9424-f2164dbd4312)
+
+The state of an existing entity is overriden by a preset value. The entity can be a simple helper which is used multiple times with different presets. It's especially useful for fixed lines.
+
+```yaml
+type: custom:mini-graph-card
+...
+  - entity: sensor.grid_return
+    name: Grid Export
+    aggregate_func: diff
+    color: var(--energy-grid-return-color)
+  - entity: input_number.value_line_0
+    preset: 20
+    line_style: dashed
+    line_width: 2
+    color: teal
+    show_fill: false
+  - entity: input_number.value_line_0
+    preset: 30
+    line_width: 2
+    color: rgba(from darkgrey r g b / 0.5)
+    show_fill: false
+line_width: 4
+show:
+  state: last
+  labels: true
+  fill: fade
 ```
 
 ## Development
