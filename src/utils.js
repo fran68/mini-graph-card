@@ -10,6 +10,14 @@ const getAvg = (arr, val) => arr.reduce((sum, p) => (
 const getMax = (arr, val) => arr.reduce((max, p) => (
   Number(p[val]) > Number(max[val]) ? p : max
 ), arr[0]);
+const getMinMaxNumber = (arr_obj, opt, glob) => {
+  if (arr_obj.length === 0) return [glob, glob];
+  const values = arr_obj.map((item) => {
+    const val = item[opt];
+    return (typeof val === 'number' && !Number.isNaN(val)) ? val : glob;
+  });
+  return [Math.min(...values), Math.max(...values)];
+};
 const getTime = (date, extra, locale = 'en-US') => date.toLocaleString(locale, { hour: 'numeric', minute: 'numeric', ...extra });
 const getMilli = hours => hours * 60 ** 2 * 10 ** 3;
 const getTimestamp = t => t.getTime() - t.getTimezoneOffset() * 60 * 10 ** 3;
@@ -29,7 +37,8 @@ const log = (message) => {
 };
 
 export {
-  getMin, getAvg, getMax, getTime, getMilli, getTimestamp, compress, decompress, log,
+  getMin, getAvg, getMax, getMinMaxNumber,
+  getTime, getMilli, getTimestamp, compress, decompress, log,
   getFirstDefinedItem,
   compareArray,
 };

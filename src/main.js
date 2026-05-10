@@ -19,7 +19,7 @@ import {
   TIME_STEPS,
 } from './const';
 import {
-  getMin, getAvg, getMax,
+  getMin, getAvg, getMax, getMinMaxNumber,
   getTime, getMilli, getTimestamp,
   compress, decompress,
   getFirstDefinedItem,
@@ -111,11 +111,16 @@ class MiniGraphCard extends LitElement {
 
     if (!this.Graph || entitiesChanged) {
       if (this._hass) this.hass = this._hass;
+      const [line_width_min, line_width_max] = getMinMaxNumber(
+        this.config.entities.filter(item => item.show_graph !== false),
+        'line_width',
+        this.config.line_width,
+      );
       this.Graph = this.config.entities.map(
         entity => new Graph(
           500,
           this.config.height,
-          [this.config.show.fill ? 0 : this.config.line_width, this.config.line_width],
+          [this.config.show.fill ? 0 : line_width_min, line_width_max],
           this.config.hours_to_show,
           this.config.points_per_hour,
           entity.aggregate_func || this.config.aggregate_func,
@@ -589,7 +594,7 @@ class MiniGraphCard extends LitElement {
         fill='none'
         stroke-dasharray=${this.length[i] || 'none'} stroke-dashoffset=${this.length[i] || 'none'}
         stroke=${'white'}
-        stroke-width=${this.config.line_width}
+        stroke-width=${this.config.entities[i].line_width || this.config.line_width}
         d=${this.line[i]}
       />`;
 
@@ -609,7 +614,7 @@ class MiniGraphCard extends LitElement {
         style=${`--mcg-hover: ${color};`}
         stroke=${color}
         fill=${color}
-        cx=${point[X]} cy=${point[Y]} r=${this.config.line_width}
+        cx=${point[X]} cy=${point[Y]} r=${this.config.entities[i].line_width || this.config.line_width}
         @mouseover=${() => this.setTooltip(i, point[3], point[V])}
         @mouseout=${() => (this.tooltip = {})}
       />
@@ -628,7 +633,7 @@ class MiniGraphCard extends LitElement {
         style="animation-delay: ${this.config.animate ? `${i * 0.5 + 0.5}s` : '0s'}"
         fill=${color}
         stroke=${color}
-        stroke-width=${this.config.line_width / 2}>
+        stroke-width=${(this.config.entities[i].line_width || this.config.line_width) / 2}>
         ${points.map(point => this.renderSvgPoint(point, i))}
       </g>`;
   }
