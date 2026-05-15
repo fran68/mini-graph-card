@@ -179,12 +179,11 @@ export default class Graph {
         offset = (this._max - stop.value) * (100 / scale);
       }
       // Update position of gradient by accounting the margin into the offset
-      const viewHeight = this.height + this.margin[Y] * 4;
-      const margin = this._calcY([[0, 0, this._max]])[0][Y] / viewHeight * 100;
-      const graph = offset * this.height / viewHeight;
+      offset = (this.margin[Y] * 2 * 100 + offset * this.height)
+        / (this.height + this.margin[Y] * 4);
       return {
         color: color || stop.color,
-        offset: margin + graph,
+        offset,
       };
     });
   }
