@@ -11,12 +11,12 @@ const getMax = (arr, val) => arr.reduce((max, p) => (
   Number(p[val]) > Number(max[val]) ? p : max
 ), arr[0]);
 const getMinMaxNumber = (arr_obj, opt, glob) => {
-  if (arr_obj.length === 0) return [glob, glob];
+  if (arr_obj.length === 0) return { min: glob, max: glob };
   const values = arr_obj.map((item) => {
     const val = item[opt];
     return (typeof val === 'number' && !Number.isNaN(val)) ? val : glob;
   });
-  return [Math.min(...values), Math.max(...values)];
+  return { min: Math.min(...values), max: Math.max(...values) };
 };
 const getTime = (date, extra, locale = 'en-US') => date.toLocaleString(locale, { hour: 'numeric', minute: 'numeric', ...extra });
 const getMilli = hours => hours * 60 ** 2 * 10 ** 3;

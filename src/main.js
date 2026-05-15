@@ -41,6 +41,7 @@ class MiniGraphCard extends LitElement {
     this.line = [];
     this.bar = [];
     this.abs = [];
+    this.line_width = {};
     this.fill = [];
     this.points = [];
     this.gradient = [];
@@ -98,6 +99,7 @@ class MiniGraphCard extends LitElement {
       timeframe: [],
       xLabelsHeight: Number,
       abs: [],
+      line_width: {},
       tooltip: {},
       updateQueue: [],
       color: String,
@@ -111,8 +113,8 @@ class MiniGraphCard extends LitElement {
 
     if (!this.Graph || entitiesChanged) {
       if (this._hass) this.hass = this._hass;
-      const [line_width_min, line_width_max] = getMinMaxNumber(
-        this.config.entities.filter(item => item.show_graph !== false),
+      this.line_width = getMinMaxNumber(
+        this.config.entities.filter(e => e.show_graph !== false && this.config.show.graph !== 'bar'),
         'line_width',
         this.config.line_width,
       );
@@ -120,7 +122,7 @@ class MiniGraphCard extends LitElement {
         entity => new Graph(
           500,
           this.config.height,
-          [this.config.show.fill ? 0 : line_width_min, line_width_max],
+          [this.config.show.fill ? 0 : this.line_width.max, this.line_width.max],
           this.config.hours_to_show,
           this.config.points_per_hour,
           entity.aggregate_func || this.config.aggregate_func,
@@ -411,7 +413,6 @@ class MiniGraphCard extends LitElement {
       x_scale,
       x_major_breaks,
       x_format,
-      line_width,
     } = this.config;
     if (!show.x_labels && !show.x_lines) return { xLines: [], xLabels: [] };
 
@@ -425,7 +426,7 @@ class MiniGraphCard extends LitElement {
     let x_date;
 
     // Define width for graph
-    const margin = [show.fill ? 0 : line_width, line_width];
+    const margin = [show.fill ? 0 : this.line_width.max, this.line_width.max];
     const graphWidth = viewWidth - margin[X] * 2;
 
     // Default time format for x-axis
