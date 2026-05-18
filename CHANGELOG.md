@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.3.0...xt-v0.3.1) (2026-05-18)
+
+
+### Bug Fixes
+
+* adapt line_width per entity for x_labels ([760b7d2](https://github.com/fran68/mini-graph-card/commit/760b7d2d0d17d759f8f32b16cd55d3a24be63fd8))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 # [0.3.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.2.1...xt-v0.3.0) (2026-05-10)
 
 
