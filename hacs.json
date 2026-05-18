@@ -1,4 +1,5 @@
 {
     "name": "mini-graph-card-xt",
-    "render_readme": true
+    "render_readme": true,
+    "filename": "mini-graph-card-xt-bundle.js"
 }

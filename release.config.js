@@ -26,6 +26,7 @@ module.exports = {
         'package-lock.json',
         'npm-shrinkwrap.json',
       ],
+      message: 'chore(release): xt-v${nextRelease.version} [skip ci]',
     }],
     ['@semantic-release/github', {
       assets: 'dist/*.js',
