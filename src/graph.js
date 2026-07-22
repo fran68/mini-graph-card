@@ -5,7 +5,7 @@ import {
 } from './const';
 
 export default class Graph {
-  constructor(width, height, margin, graph, hours = 24, points = 1, aggregateFuncName = 'avg', groupBy = 'interval', smoothing = true, logarithmic = false) {
+  constructor(width, height, margin, graph, hours = 24, points = 1, aggregateFuncName = 'avg', groupBy = 'interval', smoothing = true, logarithmic = false, tension = 0.15) {
     const aggregateFuncMap = {
       avg: this._average,
       median: this._median,
@@ -34,6 +34,7 @@ export default class Graph {
     this._logarithmic = logarithmic;
     this._groupBy = groupBy;
     this._endTime = 0;
+    this._tension = tension;
   }
 
   get max() { return this._max; }
@@ -122,7 +123,7 @@ export default class Graph {
       coords[1] = [this.width + this.margin[X], 0, coords[0][V]];
     }
     coords = this._calcY(this.coords);
-    if (this._smoothing) {
+    if (this._smoothing && this._smoothing !== 'bezierc') {
       let last = coords[0];
       coords.shift();
       return coords.map((point, i) => {
@@ -136,6 +137,35 @@ export default class Graph {
     }
   }
 
+  /**
+   * Generate a SVG path for a Cubic Bezier curve
+   * @param coords Array of X, Y, Value
+   * @returns SVG path for a Cubic Bezier curve
+   */
+  genBezierCPath(coords) {
+    // Starting point with x with coords[0][0] and y with coords[0][Y]
+    let path = `${coords[0][0]},${coords[0][Y]}`;
+    const tension = this._tension; // Default 0.15
+
+    coords.forEach((_, i, arr) => {
+      if (i === arr.length - 1) return;
+      const p0 = (i - 1 >= 0) ? arr[i - 1] : arr[i];
+      const p1 = arr[i];
+      const p2 = arr[i + 1];
+      const p3 = (i + 2 < arr.length) ? arr[i + 2] : p2;
+
+      // First control point (close to p1)
+      const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
+      const cp1y = p1[Y] + (p2[Y] - p0[Y]) * tension;
+
+      // Second control point (close to p2)
+      const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
+      const cp2y = p2[Y] - (p3[Y] - p1[Y]) * tension;
+
+      path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[Y]}`;
+    });
+    return path;
+  }
 
   getPath() {
     let { coords } = this;
@@ -143,8 +173,15 @@ export default class Graph {
       coords[1] = [this.width + this.margin[X], 0, coords[0][V]];
     }
     coords = this._calcY(this.coords);
-    let next; let Z;
     let path = '';
+
+    // Cubic Bezier curve
+    if (this._smoothing === 'bezierc') {
+      path = `M ${this.genBezierCPath(coords)}`;
+      return path;
+    }
+
+    let next; let Z;
     let last = coords[0];
     path += `M${last[X]},${last[Y]}`;
 
