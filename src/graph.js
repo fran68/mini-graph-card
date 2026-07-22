@@ -5,7 +5,7 @@ import {
 } from './const';
 
 export default class Graph {
-  constructor(width, height, margin, hours = 24, points = 1, aggregateFuncName = 'avg', groupBy = 'interval', smoothing = true, logarithmic = false) {
+  constructor(width, height, margin, graph, hours = 24, points = 1, aggregateFuncName = 'avg', groupBy = 'interval', smoothing = true, logarithmic = false) {
     const aggregateFuncMap = {
       avg: this._average,
       median: this._median,
@@ -23,6 +23,7 @@ export default class Graph {
     this.width = width - margin[X] * 2;
     this.height = height - margin[Y] * 4;
     this.margin = margin;
+    this._graph = graph;
     this._max = 0;
     this._min = 0;
     this.points = points;
@@ -59,8 +60,13 @@ export default class Graph {
     histGroups.length = requiredNumOfPoints;
 
     this.coords = this._calcPoints(histGroups);
-    this.min = Math.min(...this.coords.map(item => Number(item[V])));
-    this.max = Math.max(...this.coords.map(item => Number(item[V])));
+    if (this._graph === 'bar') {
+      this.min = Math.min(...this.coords.slice(1).map(item => Number(item[V])));
+      this.max = Math.max(...this.coords.slice(1).map(item => Number(item[V])));
+    } else {
+      this.min = Math.min(...this.coords.map(item => Number(item[V])));
+      this.max = Math.max(...this.coords.map(item => Number(item[V])));
+    }
   }
 
   _reducer(res, item) {
@@ -198,8 +204,8 @@ export default class Graph {
   getBars(position, total, spacing = 4, spacing_group = 0) {
     const coords = this._calcY(this.coords);
     const shrink = spacing_group / total;
-    const xRatio = (this.width / Math.ceil(this.hours * this.points)) / total;
-    return coords.map((coord, i) => ({
+    const xRatio = (this.width / Math.ceil(this.hours * this.points - 1)) / total;
+    return coords.slice(1).map((coord, i) => ({
       x: (xRatio * i * total) + ((xRatio - shrink) * position)
         + this.margin[X] + (spacing_group + spacing) / 2,
       y: coord[Y],

@@ -123,6 +123,7 @@ class MiniGraphCard extends LitElement {
           500,
           this.config.height,
           [this.config.show.fill ? 0 : this.line_width.max, this.line_width.max],
+          entity.set_graph,
           this.config.hours_to_show,
           this.config.points_per_hour,
           entity.aggregate_func || this.config.aggregate_func,
@@ -446,11 +447,8 @@ class MiniGraphCard extends LitElement {
       },
     };
 
-    // Get time_frame
-    // Visualized line graph is hours_to_show less one point
-    if (show.graph !== 'bar') {
-      time_frame = hours_to_show - 1 / points_per_hour || 1;
-    }
+    // Visualized graph is hours_to_show less one point
+    time_frame = hours_to_show - 1 / points_per_hour || 1;
 
     // Find best time_step [h]
     const raw = Math.max(time_frame / Math.abs(x_scale), 1 / points_per_hour);
@@ -732,9 +730,12 @@ class MiniGraphCard extends LitElement {
       format,
     } = this.config;
 
+    // omit first point
+    const offset = this.config.entities[entity].set_graph === 'bar' ? 1 : 0;
+
     // time units in milliseconds in this function
     const interval = getMilli(1 / points_per_hour);
-    const n_points = Math.ceil(hours_to_show * points_per_hour);
+    const n_points = Math.ceil(hours_to_show * points_per_hour - offset);
 
     // index is 0 (oldest) to n_points-1 (most recent ~= now)
     // count of intervals from now to end of bin
@@ -806,6 +807,11 @@ class MiniGraphCard extends LitElement {
 
   get visibleEntities() {
     return this.config.entities.filter(entity => entity.show_graph !== false);
+  }
+
+  get visibleEntitiesBars() {
+    return this.config.entities.filter(entity => entity.show_graph !== false
+      && entity.set_graph === 'bar');
   }
 
   get primaryYaxisEntities() {
@@ -966,8 +972,8 @@ class MiniGraphCard extends LitElement {
         if (!entity || this.Graph[i].coords.length === 0) return;
         const bound = config.entities[i].y_axis === 'secondary' ? this.boundSecondary : this.bound;
         [this.Graph[i].min, this.Graph[i].max] = [bound[0], bound[1]];
-        if (config.show.graph === 'bar') {
-          const numVisible = this.visibleEntities.length;
+        if (config.entities[i].set_graph === 'bar') {
+          const numVisible = this.visibleEntitiesBars.length;
           this.bar[i] = this.Graph[i]
             .getBars(graphPos, numVisible, config.bar_spacing, config.bar_spacing_group);
           graphPos += 1;

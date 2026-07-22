@@ -141,6 +141,7 @@ export default (config) => {
 
   conf.entities.forEach((entity, i) => {
     if (typeof entity === 'string') conf.entities[i] = { entity };
+    conf.entities[i].set_graph = entity.graph || conf.show.graph;
   });
 
   conf.state_map.forEach((state, i) => {
@@ -174,8 +175,15 @@ export default (config) => {
       break;
   }
 
-  if (conf.show.graph === 'bar') {
-    const entities = conf.entities.length;
+  // Add one data point to cover the complete hours to show (line graph)
+  conf.hours_to_show += 1 / conf.points_per_hour;
+
+  // Filter entities with bars as graph
+  const entities = conf.entities
+    .filter(entity => entity.set_graph === 'bar'
+      || (conf.show.graph === 'bar' && entity.graph !== 'line'))
+    .length;
+  if (entities > 0) {
     if (conf.hours_to_show * conf.points_per_hour * entities > MAX_BARS) {
       conf.points_per_hour = MAX_BARS / (conf.hours_to_show * entities);
       log(`Not enough space, adjusting points_per_hour to ${conf.points_per_hour}`);
