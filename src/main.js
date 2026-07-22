@@ -133,7 +133,6 @@ class MiniGraphCard extends LitElement {
             !entity.entity.startsWith('binary_sensor.'), // turn off for binary sensor by default
           ),
           this.config.logarithmic,
-          this.config.fill_threshold,
         ),
       );
     }
@@ -977,8 +976,7 @@ class MiniGraphCard extends LitElement {
           if (config.entities[i].show_line !== false) this.line[i] = line;
           if (config.show.fill
             && config.entities[i].show_fill !== false) this.fill[i] = this.Graph[i]
-            .getFill(line, config.entities[i].fill_threshold,
-              config.show.x_labels_fill && this.xLabelsHeight || 0);
+            .getFill(line, config.show.x_labels_fill && this.xLabelsHeight || 0);
           if (config.show.points && (config.entities[i].show_points !== false)) {
             this.points[i] = this.Graph[i].getPoints();
           }
