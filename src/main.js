@@ -559,11 +559,13 @@ class MiniGraphCard extends LitElement {
     if (!fill) return;
     const fade = this.config.show.fill === 'fade';
     const init = this.length[i] || this.config.entities[i].show_line === false;
+    const { baselineRatio: offset } = this.Graph[i];
     return svg`
       <defs>
         <linearGradient id=${`fill-grad-${this.id}-${i}`} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop stop-color='white' offset='0%' stop-opacity='1'/>
-          <stop stop-color='white' offset='100%' stop-opacity='.15'/>
+          <stop stop-color='white' offset='${offset * 100}%' stop-opacity='.15'/>
+          <stop stop-color='white' offset='100%' stop-opacity='1'/>
         </linearGradient>
         <mask id=${`fill-grad-mask-${this.id}-${i}`}>
           <rect width="100%" height="100%" fill=${`url(#fill-grad-${this.id}-${i})`} />
