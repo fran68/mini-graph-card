@@ -812,18 +812,12 @@ class MiniGraphCard extends LitElement {
     return this.config.entities.filter(entity => entity.show_graph !== false);
   }
 
-  get visibleEntitiesBars() {
-    return this.config.entities.filter(entity => entity.show_graph !== false
-      && entity.set_graph === 'bar');
-  }
-
   get primaryYaxisEntities() {
-    return this.visibleEntities.filter(entity => entity.y_axis === undefined
-      || entity.y_axis === 'primary');
+    return this.visibleEntities.filter(entity => entity.set_y_axis === 'primary');
   }
 
   get secondaryYaxisEntities() {
-    return this.visibleEntities.filter(entity => entity.y_axis === 'secondary');
+    return this.visibleEntities.filter(entity => entity.set_y_axis === 'secondary');
   }
 
   get visibleLegends() {
@@ -973,20 +967,25 @@ class MiniGraphCard extends LitElement {
       let graphPos = 0;
       this.entity.forEach((entity, i) => {
         if (!entity || this.Graph[i].coords.length === 0) return;
-        const bound = config.entities[i].y_axis === 'secondary' ? this.boundSecondary : this.bound;
+        const entityConfig = config.entities[i];
+        const bound = entityConfig.y_axis === 'secondary' ? this.boundSecondary : this.bound;
         [this.Graph[i].min, this.Graph[i].max] = [bound[0], bound[1]];
-        if (config.entities[i].set_graph === 'bar') {
-          const numVisible = this.visibleEntitiesBars.length;
+        if (entityConfig.set_graph === 'bar') {
+          const numVisible = Object.keys(config.set_groups).length;
+          const stack_key = entityConfig.stack
+            ? `${entityConfig.stack}_${entityConfig.set_y_axis}`
+            : `standalone_${entityConfig.index}`;
+          graphPos = config.set_groups[stack_key];
           this.bar[i] = this.Graph[i]
-            .getBars(graphPos, numVisible, config.bar_spacing, config.bar_spacing_group);
+            .getBars(graphPos, numVisible, entityConfig.set_bar_spacing, config.bar_spacing_group);
           graphPos += 1;
         } else {
           const line = this.Graph[i].getPath();
-          if (config.entities[i].show_line !== false) this.line[i] = line;
+          if (entityConfig.show_line !== false) this.line[i] = line;
           if (config.show.fill
-            && config.entities[i].show_fill !== false) this.fill[i] = this.Graph[i]
+            && entityConfig.show_fill !== false) this.fill[i] = this.Graph[i]
             .getFill(line, config.show.x_labels_fill && this.xLabelsHeight || 0);
-          if (config.show.points && (config.entities[i].show_points !== false)) {
+          if (config.show.points && (entityConfig.show_points !== false)) {
             this.points[i] = this.Graph[i].getPoints();
           }
           if (config.color_thresholds.length > 0 && !config.entities[i].color)

@@ -139,9 +139,25 @@ export default (config) => {
     show: { ...DEFAULT_SHOW, ...config.show },
   };
 
+  let slot = 0;
+  conf.set_groups = {};
   conf.entities.forEach((entity, i) => {
     if (typeof entity === 'string') conf.entities[i] = { entity };
     conf.entities[i].set_graph = entity.graph || conf.show.graph;
+    conf.entities[i].set_y_axis = entity.y_axis || 'primary';
+    conf.entities[i].set_bar_spacing = entity.bar_spacing || conf.bar_spacing;
+    if (entity.set_graph === 'bar' && entity.show_graph !== false) {
+      if (entity.stack) {
+        const stack = `${entity.stack}_${entity.set_y_axis}`;
+        if (conf.set_groups[stack] === undefined) {
+          conf.set_groups[stack] = slot;
+          slot += 1;
+        }
+      } else {
+        conf.set_groups[`standalone_${i}`] = slot;
+        slot += 1;
+      }
+    }
   });
 
   conf.state_map.forEach((state, i) => {
@@ -179,13 +195,10 @@ export default (config) => {
   conf.hours_to_show += 1 / conf.points_per_hour;
 
   // Filter entities with bars as graph
-  const entities = conf.entities
-    .filter(entity => entity.set_graph === 'bar'
-      || (conf.show.graph === 'bar' && entity.graph !== 'line'))
-    .length;
-  if (entities > 0) {
-    if (conf.hours_to_show * conf.points_per_hour * entities > MAX_BARS) {
-      conf.points_per_hour = MAX_BARS / (conf.hours_to_show * entities);
+  const visibleEntityGroups = Object.keys(conf.set_groups).length;
+  if (visibleEntityGroups > 0) {
+    if (conf.hours_to_show * conf.points_per_hour * visibleEntityGroups > MAX_BARS) {
+      conf.points_per_hour = MAX_BARS / (conf.hours_to_show * visibleEntityGroups);
       log(`Not enough space, adjusting points_per_hour to ${conf.points_per_hour}`);
     }
   }
