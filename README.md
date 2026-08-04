@@ -104,7 +104,7 @@ If you configure Lovelace via YAML, add a reference to `mini-graph-card-xt-bundl
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.3.1
+    - url: /local/mini-graph-card-bundle-xt.js?v=xt-v0.4.0
       type: module
   ```
 
@@ -127,7 +127,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.3.1
+    - url: /local/mini-graph-card-bundle-xt.js?v=xt-v0.4.0
       type: module
   ```
 

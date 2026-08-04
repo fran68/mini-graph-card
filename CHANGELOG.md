@@ -1,3 +1,20 @@
+# [0.4.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.3.1...xt-v0.4.0) (2026-08-04)
+
+
+### Bug Fixes
+
+* incorrect formula in getFill(), see kalkih[#1379](https://github.com/fran68/mini-graph-card/issues/1379) ([63401d5](https://github.com/fran68/mini-graph-card/commit/63401d54c5adde857d537213a92110703eff7294))
+
+
+### Features
+
+* add Cubic Bezier curve ([15af583](https://github.com/fran68/mini-graph-card/commit/15af583bc98eb47bab6c5c6b8a77e1c7d7be5169))
+* add signed based stacked overlay ([22a18b3](https://github.com/fran68/mini-graph-card/commit/22a18b3f45aae5340107826a5aca9f3966975223))
+* combine lines and bars ([9f55095](https://github.com/fran68/mini-graph-card/commit/9f550959a0d2c69a7b4d42794bed4e9f2448faef))
+* support bars with negative values, extend fill to baseline and adapt fill gradient ([dad01da](https://github.com/fran68/mini-graph-card/commit/dad01dae4d9d41c2fcd836e9f32c4cc1f611a613))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 ## [0.3.1](https://github.com/fran68/mini-graph-card/compare/xt-v0.3.0...xt-v0.3.1) (2026-05-18)
 
 
