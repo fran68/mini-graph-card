@@ -1,3 +1,67 @@
+> ## [!NOTE:]
+>
+> ## Mini Graph Card XT
+> This is a temporary fork of the original __mini-graph-card__.
+> __mini-graph-card-xt__ includes custom modifications or feature extensions for testing purpose.
+>
+> ![image](https://github.com/user-attachments/assets/d68d3f03-62d9-42d7-883c-a498009187e5)
+>
+> You can install it via HACS as [custom repository](#installation-via-hacs-custom-repository) alongside the original. Just use `mini-graph-card-xt` in the yaml configuration.
+> #### Releases are based on mini-graph-card upstream version 0.13.0.
+>
+> ## History
+>
+> ### xt-0.4.x (2026-08-04)
+>
+> * Combine [lines and bars](#lines-and-bars) in the same cart
+> * Add a [baseline](#baselining) to graphs
+>     - Bars with negative values
+>     - Lines with fill to the baseline
+> * Stack groups for multiple entities in [stacked overlaid bars](#stacked-overlaid-bars). Thanks to @ildar170975 for the idea.
+> * [Multiple stack groups](#stacked-overlaid-bars) for bars within one timeslot as extension
+> * Add per-entity bar spacing (see `bar_spacing` in [entity section](#entity-object]))
+> * Lines with [Cubic Bézier curve](#cubic-bezier-curve)
+>
+> ### xt-0.3.x (2026-05-10)
+>
+> * Add line_width per entity
+> * Add [preset](#lines-with-preset) for graphs
+> * Add spacing between bar groups/multiple entities (see `bar_spacing_group` in [card section](#card-options]))
+> * Fix gradients for color threshold, fix state last for bar graphs and fix first entity when show_graph set to false
+>
+> ### xt-0.2.x (2026-03-16)
+>
+> * Add timescale/labels and gridlines for the [X-axis](#labels-ticks-and-grid-lines-for-x-axis) ([docs](#https://github.com/fran68/mini-graph-card-xt/blob/docs/README_x_axis.md)).
+>
+>
+> ### Installation via HACS (Custom Repository)
+>
+> You can easily install this card via the Home Assistant Community Store (HACS).
+>
+> Prerequisites:
+> * Make sure you have HACS installed and running on your Home Assistant instance.
+>
+> Step-by-Step Guide
+> 1. Open HACS: Navigate to HACS in your Home Assistant sidebar.
+> 2. Access Custom Repositories:
+>     - Click on the three dots in the top right corner.
+>     - Select Custom repositories from the dropdown menu.
+> 3. Add the Repository:
+>     - Repository URL: Paste the specific repository URL https://github.com/fran68/mini-graph-card-xt.git
+>     - Category: Select Dashboard.
+>     - Click Add.
+> 4. Install the Card:
+>     - The repository will now appear in your HACS dashboard.
+>     - Click on it, then click Download in the bottom right corner.
+>     - Select the latest version and click Download again.
+> 5. Reload the Dashboard:
+>     - HACS will automatically register the card resource for you.
+>     - Refresh your browser page (e.g., press Ctrl + F5) so Home Assistant detects the new frontend plugin.
+>
+> The module `mini-graph-card-xt` is located in `/homeassistant/www/community/mini-graph-card-xt/`.
+> See the README for additional configuration options.
+>
+
 # Lovelace Mini Graph Card
 A minimalistic and customizable graph card for [Home Assistant](https://github.com/home-assistant/home-assistant) Lovelace UI.
 
@@ -13,11 +77,11 @@ This card is available in [HACS](https://hacs.xyz/) (Home Assistant Community St
 
 <small>*HACS is a third party community store and is not included in Home Assistant out of the box.*</small>
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=kalkih&repository=mini-graph-card)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fran68&repository=mini-graph-card-xt)
 
 ### Manual install
 
-1. Download and copy `mini-graph-card-bundle.js` from the [latest release](https://github.com/kalkih/mini-graph-card/releases/latest) into your `config/www` directory.
+1. Download and copy `mini-graph-card-xt-bundle.js` from the [latest release](https://github.com/fran68/mini-graph-card-xt/releases/latest) into your `config/www` directory.
 
 2. Add the resource reference as decribed below.
 
@@ -26,21 +90,21 @@ This card is available in [HACS](https://hacs.xyz/) (Home Assistant Community St
 
 1. Move into your `config/www` directory.
 
-2. Grab `mini-graph-card-bundle.js`:
+2. Grab `mini-graph-card-xt-bundle.js`:
 
   ```console
-  $ wget https://github.com/kalkih/mini-graph-card/releases/download/v0.13.0/mini-graph-card-bundle.js
+  $ wget https://github.com/fran68/mini-graph-card/releases/download/xt-v0.3.1/mini-graph-card-xt-bundle.js
   ```
 
 3. Add the resource reference as decribed below.
 
 ### Add resource reference
 
-If you configure Lovelace via YAML, add a reference to `mini-graph-card-bundle.js` inside your `configuration.yaml`:
+If you configure Lovelace via YAML, add a reference to `mini-graph-card-xt-bundle.js` inside your `configuration.yaml`:
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-bundle.js?v=0.13.0
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.3.1
       type: module
   ```
 
@@ -48,22 +112,22 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
 1. Make sure, advanced mode is enabled in your user profile (click on your user name to get there)
 2. Navigate to Configuration -> Lovelace Dashboards -> Resources Tab. Hit orange (+) icon
-3. Enter URL `/local/mini-graph-card-bundle.js` and select type "JavaScript Module".
-(Use `/hacsfiles/mini-graph-card/mini-graph-card-bundle.js` and select "JavaScript Module" for HACS install)
+3. Enter URL `/local/mini-graph-card-xt-bundle.js` and select type "JavaScript Module".
+(Use `/hacsfiles/mini-graph-card/mini-graph-card-xt-bundle.js` and select "JavaScript Module" for HACS install)
 4. Restart Home Assistant.
 
 ## Updating
 **If you have a version older than v0.0.8 installed, please delete the current files and follow the installation instructions again.**
 
-1. Find your `mini-graph-card-bundle.js` file in `config/www` or wherever you ended up storing it.
+1. Find your `mini-graph-card-xt-bundle.js` file in `config/www` or wherever you ended up storing it.
 
-2. Replace the local file with the latest one attached in the [latest release](https://github.com/kalkih/mini-graph-card/releases/latest).
+2. Replace the local file with the latest one attached in the [latest release](https://github.com/fran68/mini-graph-card-xt/releases/latest).
 
 3. Add the new version number to the end of the cards reference url in your `ui-lovelace.yaml` like below:
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-bundle.js?v=0.13.0
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.3.1
       type: module
   ```
 
@@ -79,7 +143,7 @@ We recommend looking at the [Example usage section](#example-usage) to understan
 #### Card options
 | Name | Type | Default | Since | Description |
 |------|:----:|:-------:|:-----:|-------------|
-| type ***(required)*** | string |  | v0.0.1 | `custom:mini-graph-card`.
+| type ***(required)*** | string |  | v0.0.1 | `custom:mini-graph-card-xt`.
 | entities ***(required)*** | list |  | v0.2.0 | One or more sensor entities in a list, see [entities object](#entities-object) for additional entity options.
 | icon | string |  | v0.0.1 | Set a custom icon from any of the available mdi icons.
 | icon_image | string |  | v0.12.0 | Override icon with an image url
@@ -115,7 +179,7 @@ We recommend looking at the [Example usage section](#example-usage) to understan
 | lower_bound_secondary | number *or* string |  | v0.5.0 | Set a fixed lower bound for the graph secondary Y-axis. String value starting with ~ (e.g. `~50`) specifies soft bound.
 | upper_bound_secondary | number *or* string |  | v0.5.0 | Set a fixed upper bound for the graph secondary Y-axis. String value starting with ~ (e.g. `~50`) specifies soft bound.
 | min_bound_range_secondary | number |  | v0.x.x | Applied after everything, makes sure there's a minimum range that the secondary Y-axis will have. Useful for not making small changes look large because of scale.
-| smoothing | boolean | `true` | v0.8.0 | Whether to make graph line smooth.
+| smoothing | boolean or string | `true` | v0.8.0 | Whether to make graph line smooth. Use `bezierc` to describe a line by a cubic Bezier curve.
 | state_map | [state map object](#state-map-object) |  | v0.8.0 | List of entity states to convert (order matters as position becomes a value on the graph).
 | value_factor | number | 0 | v0.9.4 | Scale value by order of magnitude (e.g. convert Watts to kilo Watts), use negative value to scale down.
 | logarithmic | boolean | `false` | v0.10.0 | Use a Logarithmic scale for the graph
@@ -133,10 +197,13 @@ properties of the Entity object detailed in the following table (as per `sensor.
 | entity ***(required)*** | string |         | Entity id of the sensor.
 | attribute | string |         | Retrieves an attribute or [sub-attribute (attr1.attr2...)](#accessing-attributes-in-complex-structures) instead of the state
 | name | string |         | Set a custom display name, defaults to entity's friendly_name.
+| graph | string |         | Override for the graph type, `bar` or `line`.
+| bar_spacing | number |         | Override for the spacing between bars in bar graph.
 | line_width | number |         | Override for a thickness of the line.
 | color | string |         | Set a custom color, overrides all other color options including thresholds.
 | unit | string |         | Set a custom unit of measurement, overrides `unit` set in base config (`''` value for an empty unit).
 | aggregate_func | string |         | Override for aggregate function used to calculate point on the graph, `avg`, `median`, `min`, `max`, `first`, `last`, `sum`.
+| stack | string |         | Use with any group name to combine entities into a single stack.
 | show_state | boolean |         | Display the current state.
 | show_legend_state | boolean |  false  | Display the current state as part of the legend.
 | show_indicator | boolean |         | Display a color indicator next to the state, (only when more than two states are visible).
@@ -148,7 +215,7 @@ properties of the Entity object detailed in the following table (as per `sensor.
 | state_adaptive_color | boolean |         | Make the color of the state adapt to the entity color.
 | y_axis | string |         | If 'secondary', displays using the secondary y-axis on the right.
 | fixed_value | boolean |         | Set to true to graph the entity's current state as a fixed value instead of graphing its state history.
-| smoothing | boolean |         | Override for a flag indicating whether to make graph line smooth.
+| smoothing | boolean or string |         | Override for a flag indicating whether to make graph line smooth. Use `bezierc` to describe a line by a cubic Bezier curve.
 | preset | number |         | Override the entity state with a preset value.
 
 ```yaml
@@ -283,7 +350,7 @@ The following theme variables can be set in your HA theme to customize the appea
 ![Single entity card](https://user-images.githubusercontent.com/457678/52009150-884d2500-24d2-11e9-9f2b-2981210d3897.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
  - sensor.illumination
 ```
@@ -293,7 +360,7 @@ entities:
 ![Alternative style](https://user-images.githubusercontent.com/457678/52009161-8daa6f80-24d2-11e9-8678-47658a181615.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
  - sensor.illumination
 align_icon: left
@@ -307,7 +374,7 @@ show:
 ![Multiple entities card](https://user-images.githubusercontent.com/457678/52009165-900cc980-24d2-11e9-8cc6-c77de58465b5.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 name: SERVER
 icon: mdi:server
 entities:
@@ -322,7 +389,7 @@ entities:
 ![Bar chart card](https://user-images.githubusercontent.com/457678/52970286-985e7300-33b3-11e9-89bc-1278c4e2ecf2.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.energy_consumption
 name: ENERGY CONSUMPTION
@@ -337,7 +404,7 @@ Use the `hours_to_show` option to specify how many hours of history the graph sh
 Use the `points_per_hour` option to specify the accuracy/detail of the graph.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - sensor.living_room_temp
 name: LIVING ROOM
@@ -349,7 +416,7 @@ points_per_hour: 0.25
 Use the `show` option to show/hide UI elements.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - sensor.humidity
 show:
@@ -366,19 +433,19 @@ You can stack cards horizontally by using one or more `horizontal-stack(s)`.
 ```yaml
 type: horizontal-stack
 cards:
-  - type: custom:mini-graph-card
+  - type: custom:mini-graph-card-xt
     entities:
       - sensor.humidity
     line_color: blue
     line_width: 8
     font_size: 75
-  - type: custom:mini-graph-card
+  - type: custom:mini-graph-card-xt
     entities:
       - sensor.illumination
     line_color: '#e74c3c'
     line_width: 8
     font_size: 75
-  - type: custom:mini-graph-card
+  - type: custom:mini-graph-card-xt
     entities:
       - sensor.temperature
     line_color: var(--accent-color)
@@ -392,7 +459,7 @@ Have the graph change line color dynamically.
 ![Dynamic line color](https://user-images.githubusercontent.com/457678/52573150-cbd05900-2e19-11e9-9e01-740753169093.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - sensor.sensor_temperature
 show:
@@ -413,7 +480,7 @@ shows turning off the line, points and legend.
 ![Alternate y-axis](https://user-images.githubusercontent.com/373079/60764115-63cf2780-a0c6-11e9-8b9a-97fc47161180.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.verandah
     name: Verandah
@@ -441,7 +508,7 @@ show:
 You can group values by date, this way you can visualize for example daily energy consumption.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.energy_daily
 name: Energy consumption
@@ -459,7 +526,7 @@ from last week.
 ![mini_temperature_aggregate_daily](https://user-images.githubusercontent.com/8268674/66688610-44c0d280-ec7f-11e9-86c2-a728da239dab.png)
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.outside_temp
     aggregate_func: max
@@ -484,7 +551,7 @@ group_by: date
 You can render non-numeric states by providing state_map config. For example this way you can show data coming from binary sensors.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: binary_sensor.living_room_motion
     name: Living room
@@ -516,7 +583,7 @@ state_map:
 It is possible to show a state without displaying a graph for a sensor.
 Imagine there are two CO-2 sensors & one humidity sensor; graphs are displayed for the CO-2 only, and the humidity is shown as a state only.
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.xiaomi_cg_1_humidity
     show_state: true
@@ -554,7 +621,7 @@ dict_attribute:
 ```
 Such data should be addressed as `dict_attribute.sub_attribute`:
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.testing_object_data
     attribute: dict_attribute.value_1
@@ -579,7 +646,7 @@ list_attribute:
 ```
 Such data should be addressed as `list_attribute.index.sub_attribute`:
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 entities:
   - entity: sensor.testing_object_data_list
     attribute: list_attribute.0.value_1
@@ -589,12 +656,12 @@ entities:
 
 #### Labels, ticks and grid lines for X-axis
 
-![image](https://github.com/user-attachments/assets/32583de8-db33-4313-9f16-8cae9688398b)
+![image](https://github.com/user-attachments/assets/a7104e10-d235-453b-86e1-e537aa8cbbf0)
 
 You can add labels and grid lines for the X-axis.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 name: Floor
 entities:
   - entity: sensor.temperature
@@ -613,7 +680,7 @@ group_by: hour
 The state of an existing entity is overriden by a preset value. The entity can be a simple helper which is used multiple times with different presets. It's especially useful for fixed lines.
 
 ```yaml
-type: custom:mini-graph-card
+type: custom:mini-graph-card-xt
 ...
   - entity: sensor.grid_return
     name: Grid Export
@@ -637,19 +704,214 @@ show:
   fill: fade
 ```
 
+
+#### Lines and Bars
+
+![image](https://github.com/user-attachments/assets/19a4521d-a5be-4de8-b4b1-1cf8b46aa33e)
+
+Lines and bars can be combined in the same cart. The global configuration is overriden by the `graph` option in the entity configuration part (see option `graph` in [entity section](#entities-object)).
+
+```yaml
+type: custom:mini-graph-card-xt
+name: Temperature and Humidity
+height: 250
+entities:
+  - entity: sensor.sensor_temperature
+    show_graph: false
+  - entity: sensor.sensor_humidity
+    name: Humidity
+    show_state: true
+    graph: bar
+    y_axis: secondary
+  - entity: sensor.sensor_temperature
+    name: Temperature
+    line_width: 4
+    show_fill: false
+show:
+  icon: false
+  legend: false
+  labels: true
+  labels_secondary: true
+hours_to_show: 12
+group_by: hour
+```
+Example: The graph type defaults to `line` and there is no global graph configuration under the `show:` option. By defining the graph type explicitly for the second entity the graph is drawn as a `bar`.  
+
+
+#### Baselining
+
+The baseline feature allows bars with negative values to be drawn. Bars fill the area between their values and the baseline, which is the zero line by default. 
+
+![image](https://github.com/user-attachments/assets/4e2bdd5e-cf56-4d21-a7da-66d23436fe69)
+
+The baseline also serves as the reference for line graph fills and their gradients, which now fade out toward this baseline.
+
+![image](https://github.com/user-attachments/assets/9adced1b-768c-4ba7-9852-2a28f78d435e)
+
+
+#### Cubic Bézier curve
+
+You can use the Cubic Bézier curve for a line graph (see option `smoothing` in [card section](#card-options) and [entity section](#entities-object)).
+
+![image](https://github.com/user-attachments/assets/ed0fdc37-472f-4f03-bc9b-5a5f30b636c5)
+
+With `show_state: last`, the state matches the value of the last touched point. Compared to a Quadratic (Q) curve (Default when `smoothing` set to `true`), the Cubic (C) Bézier curve aligns more accurately with the underlying data points.
+Example: The `smoothing` option is set to `bezierc` for the third entity to render a Cubic Bézier curve. 
+
+```yaml
+type: custom:mini-graph-card-xt
+name: Consumed energy
+height: 200
+entities:
+  - entity: sensor.total_energy_consumption
+    name: Consumed
+    show_legend_state: true
+    color: rgba(from rgb(47 95 130) r g b / 0.8)
+  - entity: sensor.total_energy_consumption
+    name: Consumed (Quadratic Bezier curve)
+    graph: line
+    color: rgba(from rgb(147 95 130) r g b / 0.7)
+    smoothing: true
+  - entity: sensor.total_energy_consumption
+    name: Consumed (Cubic Bezier curve)
+    graph: line
+    color: rgba(from rgb(47 195 130) r g b / 0.7)
+    smoothing: bezierc
+  - entity: sensor.total_energy_consumption
+    name: Consumed (Linear)
+    graph: line
+    color: rgba(from rgb(47 95 50) r g b / 0.9)
+    show_graph: false
+group: false
+aggregate_func: diff
+line_width: 4
+hour24: true
+smoothing: false
+show:
+  icon: false
+  state: last
+  legend: true
+  labels: true
+  fill: fade
+  graph: bar
+  x_labels: true
+  x_lines: true
+hours_to_show: 192
+group_by: date
+xtime_format:
+  locales: locale
+  days:
+    day: numeric
+    weekday: short
+```
+
+
+#### Stacked overlaid Bars
+
+This extends the way transparent line fills are visually layered to bars. Instead of sitting side-by-side within the same time slot, the bars are rendered directly behind one another.
+
+![image](https://github.com/user-attachments/assets/cd8ed0ff-228d-4320-ab64-6cd363d5a88e)
+
+You can create stack groups by assigning a custom name to the stack option. This allows you to combine multiple entities (see the `stack` option in the [entities section](#entities-object)).
+
+```yaml
+type: custom:mini-graph-card-xt
+name: Consumption
+height: 200
+entities:
+  - entity: sensor.total_pv_energy_yield
+    name: PV yield
+    stack: group_1
+  - entity: sensor.total_energy_consumption
+    name: Consumption
+    color: rgba(47,95,130,0.7)
+    stack: group_1
+aggregate_func: diff
+show:
+  icon: false
+  labels: true
+  graph: bar
+hours_to_show: 240
+bar_spacing: 4
+group_by: date
+```
+
+Multiple stack groups can be created to sit side-by-side within a single time slot, and each group is unique to its respective Y-axis.
+
+![image](https://github.com/user-attachments/assets/d68d3f03-62d9-42d7-883c-a498009187e5)
+
+By using the per-entity bar_spacing option, a thinner bar can be rendered in the foreground.
+
+```yaml
+type: custom:mini-graph-card-xt
+name: Consumption
+height: 200
+entities:
+  - preset: 0
+    graph: line
+    show_legend: false
+    show_fill: false
+    show_label: true
+    line_width: 2
+    line_style: 0.1 3
+    color: grey
+  - entity: sensor.total_charged_energy_negative
+    name: Charged
+    color: var(--energy-battery-in-color)
+    stack: charge
+  - entity: sensor.total_discharged_energy
+    name: Discharged
+    color: var(--energy-battery-out-color)
+    stack: charge
+  - entity: sensor.total_pv_energy_yield
+    name: PV yield
+    color: var(--energy-solar-color)
+    stack: pv_cons
+  - entity: sensor.total_energy_consumption
+    name: Consumption
+    color: "#2f5f82"
+    bar_spacing: 12
+    stack: pv_cons
+  - entity: sensor.total_feed_in_to_grid_negative
+    name: To Grid
+    color: var(--energy-grid-return-color)
+    stack: pv_cons
+line_width: 4
+hour24: true
+aggregate_func: diff
+show:
+  icon: false
+  state: last
+  labels: true
+  fill: blended
+  graph: bar
+  x_labels: true
+  x_lines: true
+hours_to_show: 192
+group_by: date
+x_scale: 12
+bar_spacing: 2
+bar_spacing_group: 10
+xtime_format:
+  locales: locale
+  days:
+    day: numeric
+    weekday: short
+```
+
 ## Development
 
 1. Clone this repository into your `config/www` folder using git:
 
 ```console
-$ git clone https://github.com/kalkih/mini-graph-card.git
+$ git clone https://github.com/fran68/mini-graph-card-xt.git
 ```
 
 2. Add a reference to the card in your `ui-lovelace.yaml`:
 
 ```yaml
 resources:
-  - url: /local/mini-graph-card/dist/mini-graph-card-bundle.js
+  - url: /local/mini-graph-card/dist/mini-graph-card-xt-bundle.js
     type: module
 ```
 
@@ -657,9 +919,9 @@ resources:
 
 *Requires `nodejs` & `npm`.*
 
-1. Move into the `mini-graph-card` repo, checkout the *dev* branch & install dependencies:
+1. Move into the `mini-graph-card-xt` repo, checkout the *dev* branch & install dependencies:
 ```console
-$ cd mini-graph-card && git checkout dev && npm install
+$ cd mini-graph-card-xt && git checkout dev && npm install
 ```
 
 2. Make changes to the source code.
@@ -678,7 +940,7 @@ $ npm run build
 $ npm run watch
 ```
 
-*The new `mini-graph-card-bundle.js` will be build and ready inside `/dist`.*
+*The new `mini-graph-card-xt-bundle.js` will be build and ready inside `/dist`.*
 
 Note that the `dev` branch is the most up-to-date and matches our beta releases.
 
@@ -687,7 +949,7 @@ Please refer to the [Contribution Guidelines](./CONTRIBUTING.md) if you're inter
 ## Getting errors?
 Make sure you have `javascript_version: latest` in your `configuration.yaml` under `frontend:`.
 
-Make sure you have the latest versions of `mini-graph-card.js` & `mini-graph-lib.js`.
+Make sure you have the latest versions of `mini-graph-card-xt.js` & `mini-graph-lib.js`.
 
 If you have issues after updating the card, try clearing your browser cache.
 
