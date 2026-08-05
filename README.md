@@ -25,7 +25,7 @@
 > ### xt-0.3.x (2026-05-10)
 >
 > * Add line_width per entity
-> * Add [preset](#lines-with-preset) for graphs
+> * Add [static value line](#lines-with-static-value) for graphs
 > * Add spacing between bar groups/multiple entities (see `bar_spacing_group` in [card section](#card-options]))
 > * Fix gradients for color threshold, fix state last for bar graphs and fix first entity when show_graph set to false
 >
@@ -195,6 +195,7 @@ properties of the Entity object detailed in the following table (as per `sensor.
 | Name | Type | Default | Description |
 |------|:----:|:-------:|-------------|
 | entity ***(required)*** | string |         | Entity id of the sensor.
+| static_value | number |         | Set a static value as a virtual entity instead of entity.
 | attribute | string |         | Retrieves an attribute or [sub-attribute (attr1.attr2...)](#accessing-attributes-in-complex-structures) instead of the state
 | name | string |         | Set a custom display name, defaults to entity's friendly_name.
 | graph | string |         | Override for the graph type, `bar` or `line`.
@@ -216,7 +217,6 @@ properties of the Entity object detailed in the following table (as per `sensor.
 | y_axis | string |         | If 'secondary', displays using the secondary y-axis on the right.
 | fixed_value | boolean |         | Set to true to graph the entity's current state as a fixed value instead of graphing its state history.
 | smoothing | boolean or string |         | Override for a flag indicating whether to make graph line smooth. Use `bezierc` to describe a line by a cubic Bezier curve.
-| preset | number |         | Override the entity state with a preset value.
 
 ```yaml
 entities:
@@ -673,11 +673,11 @@ hours_to_show: 60
 group_by: hour
 ```
 
-#### Lines with Preset
+#### Lines with static value
 
 ![image](https://github.com/user-attachments/assets/f6083986-92d2-4cb2-9424-f2164dbd4312)
 
-The state of an existing entity is overriden by a preset value. The entity can be a simple helper which is used multiple times with different presets. It's especially useful for fixed lines.
+Instead of an entity the static_value key word can be used to draw a fixed line.
 
 ```yaml
 type: custom:mini-graph-card-xt
@@ -686,14 +686,12 @@ type: custom:mini-graph-card-xt
     name: Grid Export
     aggregate_func: diff
     color: var(--energy-grid-return-color)
-  - entity: input_number.value_line
-    preset: 20
+  - static_value: 20
     line_style: dashed
     line_width: 2
     color: teal
     show_fill: false
-  - entity: input_number.value_line
-    preset: 30
+  - static_value: 30
     line_width: 2
     color: rgba(from darkgrey r g b / 0.5)
     show_fill: false

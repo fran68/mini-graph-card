@@ -63,6 +63,22 @@ class MiniGraphCard extends LitElement {
     const queue = [];
     this.config.entities.forEach((entity, index) => {
       this.config.entities[index].index = index; // Required for filtered views
+
+      // Handle static value lines
+      if (typeof entity.static_value === 'number') {
+        if (!this.entity[index]) {
+          this.entity[index] = {
+            // Fallback to a safe unique name if entity is completely omitted in YAML
+            entity_id: entity.entity || `sensor.virtual_static_value_${index}`,
+            state: entity.static_value.toString(),
+            attributes: { friendly_name: entity.name || `Static value ${index}` },
+          };
+          queue.push(`${this.entity[index].entity_id}-${index}`);
+          updated = true;
+        }
+        return; // Blocks live updates safely
+      }
+
       const entityState = hass && hass.states[entity.entity] || undefined;
       if (entityState && this.entity[index] !== entityState) {
         this.entity[index] = entityState;
@@ -131,7 +147,7 @@ class MiniGraphCard extends LitElement {
           getFirstDefinedItem(
             entity.smoothing,
             this.config.smoothing,
-            !entity.entity.startsWith('binary_sensor.'), // turn off for binary sensor by default
+            entity.entity ? !entity.entity.startsWith('binary_sensor.') : false, // turn off for binary sensor by default and fallback for virtual lines
           ),
           this.config.logarithmic,
           this.config.tension,
@@ -660,7 +676,7 @@ class MiniGraphCard extends LitElement {
       : this.computeColor(this.entity[i].state, i);
     return svg`
       <rect class='line--rect'
-        ?inactive=${this.tooltip.entity !== undefined && this.tooltip.entity !== i}
+        ?inactive=${this.tooltip.entity !== undefined && this.tooltip.entity !== i && this.config.entities[i].show_static_value !== true}
         id=${`rect-${this.id}-${i}`}
         fill=${fill} height="100%" width="100%"
         mask=${`url(#line-${this.id}-${i})`}
@@ -834,7 +850,8 @@ class MiniGraphCard extends LitElement {
   }
 
   get visibleEntities() {
-    return this.config.entities.filter(entity => entity.show_graph !== false);
+    return this.config.entities.filter(entity => entity.show_graph !== false
+      && !entity.static_value);
   }
 
   get primaryYaxisEntities() {
@@ -1110,6 +1127,30 @@ class MiniGraphCard extends LitElement {
       || !this.updateQueue.includes(`${entity.entity_id}-${index}`)
       || this.config.entities[index].show_graph === false
     ) return;
+
+    // Intercept immediately if it is a static_value line
+    if (typeof this.config.entities[index].static_value === 'number') {
+      const value = this.config.entities[index].static_value;
+
+      // Manually generate two data points spanning the entire timeline
+      const first = {
+        last_changed: initStart.toISOString(),
+        last_updated: initStart.toISOString(),
+        state: value,
+      };
+      const last = {
+        last_changed: end.toISOString(),
+        last_updated: end.toISOString(),
+        state: value,
+      };
+
+      // Directly feed the graph history array
+      this.Graph[index].history = [first, last];
+
+      // Exit immediately to ensure fetchRecent is NEVER called!
+      return;
+    }
+
     this.updateQueue = this.updateQueue.filter(entry => entry !== `${entity.entity_id}-${index}`);
 
     let stateHistory = [];
@@ -1204,11 +1245,6 @@ class MiniGraphCard extends LitElement {
 
     if (this.config.entities[index].fixed_value === true) {
       const last = stateHistory[stateHistory.length - 1];
-      this.Graph[index].history = [last, last];
-    } else if (typeof this.config.entities[index].preset === 'number') {
-      const final = stateHistory[stateHistory.length - 1];
-      const last = JSON.parse(JSON.stringify(final));
-      last.state = this.config.entities[index].preset;
       this.Graph[index].history = [last, last];
     } else {
       this.Graph[index].history = stateHistory;
