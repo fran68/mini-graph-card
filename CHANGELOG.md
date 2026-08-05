@@ -1,3 +1,13 @@
+# [0.5.0](https://github.com/fran68/mini-graph-card-xt/compare/xt-v0.4.1...xt-v0.5.0) (2026-08-05)
+
+
+### Features
+
+* add blended style for bars ([c5b963b](https://github.com/fran68/mini-graph-card-xt/commit/c5b963bbeb44fdb84d09e7b4f67ea2afcef0cd1d))
+* render graphs in the order specified in YAML config ([3619e51](https://github.com/fran68/mini-graph-card-xt/commit/3619e51ce505e90e6d962635bf4890238f353b95))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 ## [0.4.1](https://github.com/fran68/mini-graph-card-xt/compare/xt-v0.4.0...xt-v0.4.1) (2026-08-05)
 
 

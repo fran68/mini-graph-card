@@ -93,7 +93,7 @@ This card is available in [HACS](https://hacs.xyz/) (Home Assistant Community St
 2. Grab `mini-graph-card-xt-bundle.js`:
 
   ```console
-  $ wget https://github.com/fran68/mini-graph-card-xt/releases/download/xt-v0.4.1/mini-graph-card-xt-bundle.js
+  $ wget https://github.com/fran68/mini-graph-card-xt/releases/download/xt-v0.5.0/mini-graph-card-xt-bundle.js
   ```
 
 3. Add the resource reference as decribed below.
@@ -104,7 +104,7 @@ If you configure Lovelace via YAML, add a reference to `mini-graph-card-xt-bundl
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.4.1
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.5.0
       type: module
   ```
 
@@ -127,7 +127,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.4.1
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.5.0
       type: module
   ```
 
