@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/fran68/mini-graph-card-xt/compare/xt-v0.4.0...xt-v0.4.1) (2026-08-05)
+
+
+### Bug Fixes
+
+* update README.md ([67dd822](https://github.com/fran68/mini-graph-card-xt/commit/67dd822a387b16820186a70bdb77ba892a3b0498))
+
+### Fork based on [mini-graph-card](https://github.com/kalkih/mini-graph-card.git), upstream version **0.13.0**
+
 # [0.4.0](https://github.com/fran68/mini-graph-card/compare/xt-v0.3.1...xt-v0.4.0) (2026-08-04)
 
 
