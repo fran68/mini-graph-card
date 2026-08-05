@@ -705,6 +705,7 @@ class MiniGraphCard extends LitElement {
   renderSvg() {
     const { height } = this.config;
     const { xLines, xLabels } = this.renderXAxis;
+    /* eslint-disable indent */
     return svg`
       <svg width='100%' height=${height !== 0 ? '100%' : 0}
         viewBox='0 0 500 ${height + this.xLabelsHeight}'
@@ -714,15 +715,25 @@ class MiniGraphCard extends LitElement {
           <defs>
             ${this.renderSvgGradient(this.gradient)}
           </defs>
-          ${this.fill.map((fill, i) => this.renderSvgFill(fill, i))}
-          ${this.fill.map((fill, i) => this.renderSvgFillRect(fill, i))}
-          ${this.line.map((line, i) => this.renderSvgLine(line, i))}
-          ${this.line.map((line, i) => this.renderSvgLineRect(line, i))}
-          ${this.bar.map((bars, i) => this.renderSvgBars(bars, i))}
+          ${this.entity.map((_, i) => {
+            if (this.bar[i]) {
+              return this.renderSvgBars(this.bar[i], i);
+            }
+            if (this.line[i]) {
+              return svg`
+                ${this.renderSvgFill(this.fill[i], i)}
+                ${this.renderSvgFillRect(this.fill[i], i)}
+                ${this.renderSvgLine(this.line[i], i)}
+                ${this.renderSvgLineRect(this.line[i], i)}
+              `;
+            }
+            return '';
+          })}
         </g>
         <g class="xlabels">${xLabels}</g>
         ${this.points.map((points, i) => this.renderSvgPoints(points, i))}
       </svg>`;
+    /* eslint-enable indent */
   }
 
   setTooltip(entity, index, value, label = null) {
