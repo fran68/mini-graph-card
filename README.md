@@ -1,5 +1,5 @@
-> ## [!NOTE:]
->
+> [!NOTE]
+> .
 > ## Mini Graph Card XT
 > This is a temporary fork of the original __mini-graph-card__.
 > __mini-graph-card-xt__ includes custom modifications or feature extensions for testing purpose.
@@ -31,10 +31,10 @@
 >
 > ### xt-0.2.x (2026-03-16)
 >
-> * Add timescale/labels and gridlines for the [X-axis](#labels-ticks-and-grid-lines-for-x-axis) ([docs](#https://github.com/fran68/mini-graph-card-xt/blob/docs/README_x_axis.md)).
+> * Add timescale/labels and gridlines for the [X-axis](#labels-ticks-and-grid-lines-for-x-axis) ([docs](../blob/docs/README_x_axis.md)).
 >
 >
-> ### Installation via HACS (Custom Repository)
+> ## Installation via HACS (Custom Repository)
 >
 > You can easily install this card via the Home Assistant Community Store (HACS).
 >
@@ -93,7 +93,7 @@ This card is available in [HACS](https://hacs.xyz/) (Home Assistant Community St
 2. Grab `mini-graph-card-xt-bundle.js`:
 
   ```console
-  $ wget https://github.com/fran68/mini-graph-card/releases/download/xt-v0.3.1/mini-graph-card-xt-bundle.js
+  $ wget https://github.com/fran68/mini-graph-card-xt/releases/download/xt-v0.4.0/mini-graph-card-xt-bundle.js
   ```
 
 3. Add the resource reference as decribed below.
@@ -104,7 +104,7 @@ If you configure Lovelace via YAML, add a reference to `mini-graph-card-xt-bundl
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-bundle-xt.js?v=xt-v0.4.0
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.4.0
       type: module
   ```
 
@@ -127,7 +127,7 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
   ```yaml
   resources:
-    - url: /local/mini-graph-card-bundle-xt.js?v=xt-v0.4.0
+    - url: /local/mini-graph-card-xt-bundle.js?v=xt-v0.4.0
       type: module
   ```
 
@@ -686,13 +686,13 @@ type: custom:mini-graph-card-xt
     name: Grid Export
     aggregate_func: diff
     color: var(--energy-grid-return-color)
-  - entity: input_number.value_line_0
+  - entity: input_number.value_line
     preset: 20
     line_style: dashed
     line_width: 2
     color: teal
     show_fill: false
-  - entity: input_number.value_line_0
+  - entity: input_number.value_line
     preset: 30
     line_width: 2
     color: rgba(from darkgrey r g b / 0.5)
@@ -847,7 +847,8 @@ type: custom:mini-graph-card-xt
 name: Consumption
 height: 200
 entities:
-  - preset: 0
+  - entity: input_number.value_line
+    preset: 0
     graph: line
     show_legend: false
     show_fill: false
