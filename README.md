@@ -236,7 +236,7 @@ All properties are optional.
 | icon | `true` | `true` / `false` | Display icon.
 | state | `true` | `true` / `false` / `last` | Display current state. `last` will show the last graph point's value.
 | graph | `line` | `line` / `bar` / `false` | Display option for the graph. If set to `bar` a maximum of `96` bars will be displayed.
-| fill | `true` | `true` / `false` / `fade` | Display the line graph fill.
+| fill | `true` | `true` / `false` / `fade` / `blended` | Display the line graph fill. Use fill `blended` for bars.
 | points | `hover` | `true` / `false` / `hover` | Display graph data points.
 | legend | `true` | `true` / `false` | Display the graph legend (only shown when graph contains multiple entities).
 | average | `false` | `true` / `false` | Display average information.

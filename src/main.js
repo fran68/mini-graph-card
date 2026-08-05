@@ -683,6 +683,7 @@ class MiniGraphCard extends LitElement {
 
   renderSvgBars(bars, index) {
     if (!bars) return;
+    const fill = ['blended'].find(ele => ele === this.config.show.fill);
     const items = bars.map((bar, i) => {
       const animation = this.config.animate
         ? svg`
@@ -692,8 +693,21 @@ class MiniGraphCard extends LitElement {
         : '';
       const color = this.computeColor(bar.value, index);
       return svg`
+        <defs>
+          <linearGradient id=${`fill-blended-${this.id}-${index}-${i}`} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop stop-color='white' offset='0%' stop-opacity='1'/>
+            <stop stop-color='white' offset='75%' stop-opacity='.66'/>
+            <stop stop-color='white' offset='100%' stop-opacity='1'/>
+          </linearGradient>
+          <mask id=${`fill-blended-mask-${this.id}-${index}-${i}`}>
+            <rect x=${bar.x} y=${bar.y}
+              height=${bar.height} width=${bar.width}
+              fill=${`url(#fill-blended-${this.id}-${index}-${i})`} />
+          </mask>
+        </defs>
         <rect class='bar' x=${bar.x} y=${bar.y}
           height=${bar.height} width=${bar.width} fill=${color}
+          mask=${fill ? `url(#fill-${fill}-mask-${this.id}-${index}-${i})` : ''}
           @mouseover=${() => this.setTooltip(index, i, bar.value)}
           @mouseout=${() => (this.tooltip = {})}>
           ${animation}
